@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --radius: 0.5rem;
+  }
+
+  /*
+   * Dark Mode - Optimizado para lectura nocturna
+   * Paleta slate para evitar negro puro (#000)
+   * Contraste WCAG AA mínimo
+   */
+  .dark {
+    --background: 222 47% 11%; /* slate-900 */
+    --foreground: 210 40% 98%; /* slate-50 */
+    --card: 217 33% 17%; /* slate-800 */
+    --card-foreground: 210 40% 98%; /* slate-50 */
+    --popover: 217 33% 17%; /* slate-800 */
+    --popover-foreground: 210 40% 98%; /* slate-50 */
+    --primary: 210 40% 98%; /* slate-50 */
+    --primary-foreground: 222 47% 11%; /* slate-900 */
+    --secondary: 217 33% 22%; /* slate-700/800 mix */
+    --secondary-foreground: 210 40% 98%; /* slate-50 */
+    --muted: 217 33% 22%; /* slate-700/800 mix */
+    --muted-foreground: 215 20% 65%; /* slate-400 */
+    --accent: 217 33% 22%; /* slate-700/800 mix */
+    --accent-foreground: 210 40% 98%; /* slate-50 */
+    --destructive: 0 62.8% 45%; /* red-600 ajustado */
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 25%; /* slate-700 */
+    --input: 217 33% 25%; /* slate-700 */
+    --ring: 212 95% 68%; /* sky-400 para focus visible */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* App-like: Eliminar destello al tocar en iOS/Android */
+    -webkit-tap-highlight-color: transparent;
+    /* App-like: Evitar rebote elástico al final del scroll */
+    overscroll-behavior-y: none;
+  }
+
+  /* Safe area para dispositivos con notch */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  /* Mejorar scrolling en móvil */
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    /* Evitar rebote en el html también */
+    overscroll-behavior-y: none;
+  }
+
+  /* Mejor touch en botones/links */
+  button,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+}

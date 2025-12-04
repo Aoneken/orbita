@@ -1,0 +1,92 @@
+# ============================================
+# Orbita - .gitignore
+# Production-Ready Configuration
+# ============================================
+
+# === WORKSPACE (Development Notes & Personal Files) ===
+# Carpeta de cuarentena para apuntes, docs personales, scripts de desarrollo
+_workspace/
+
+# === Carpeta legacy (pendiente de eliminar) ===
+v-1.0/
+
+# === NODE ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+
+# === BUILD ===
+dist/
+build/
+*.turbo/
+.parcel-cache/
+.cache/
+
+# === ENVIRONMENT ===
+# NUNCA commitear credenciales reales
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# === LOGS ===
+logs/
+*.log
+
+# === OS ===
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+Desktop.ini
+ehthumbs.db
+
+# === IDEs ===
+# Cada desarrollador debe tener su propia configuración local
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*~
+
+# === TYPESCRIPT ===
+*.tsbuildinfo
+
+# === TEST ===
+coverage/
+coverage-final.json
+nyc_output/
+.nyc_output/
+
+# === TEMP & BACKUP ===
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+
+# === MISC ===
+public/build/
+.pnp/
+.pnp.js
+.pnp.cjs
+
+# === SCREENSHOTS & MEDIA (Development) ===
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+!public/**/*.png
+!public/**/*.jpg
+!public/**/*.jpeg
+!public/**/*.gif
+!public/**/*.svg
+!src/**/*.png
+!src/**/*.jpg
+!src/**/*.svg
