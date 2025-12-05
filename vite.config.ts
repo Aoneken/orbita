@@ -49,7 +49,7 @@ export default defineConfig({
         // Runtime caching para API de Supabase
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/.*\.supabase\.co\/.*/i,
+            urlPattern: /^(?!.*\/auth\/)https:\/\/.*\.supabase\.co\/.*/i,
             handler: "NetworkFirst",
             options: {
               cacheName: "supabase-api-cache",

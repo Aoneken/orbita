@@ -44,7 +44,10 @@ export function useRealtimeAvisos(options: UseRealtimeAvisosOptions = {}) {
 
   // Ref estable para el callback - evita re-suscripciones cuando onNewAviso cambia
   const onNewAvisoRef = useRef(onNewAviso);
-  onNewAvisoRef.current = onNewAviso;
+  // Actualizar ref cuando cambia el callback
+  useEffect(() => {
+    onNewAvisoRef.current = onNewAviso;
+  }, [onNewAviso]);
 
   /**
    * Resetea el contador de nuevos avisos
@@ -56,7 +59,6 @@ export function useRealtimeAvisos(options: UseRealtimeAvisosOptions = {}) {
 
   useEffect(() => {
     if (!enabled) {
-      setStatus("disconnected");
       return;
     }
 
@@ -76,7 +78,9 @@ export function useRealtimeAvisos(options: UseRealtimeAvisosOptions = {}) {
               table: "avisos_bora",
             },
             async (payload) => {
-              console.debug("[Realtime] Nuevo aviso detectado:", payload.new);
+              if (import.meta.env.DEV) {
+                console.debug("[Realtime] Nuevo aviso detectado:", payload.new);
+              }
 
               // 1. Invalidar queries para refrescar la lista
               await queryClient.invalidateQueries({ queryKey: ["avisos"] });
@@ -113,7 +117,9 @@ export function useRealtimeAvisos(options: UseRealtimeAvisosOptions = {}) {
             }
           )
           .subscribe((status, err) => {
-            console.debug("[Realtime] Estado del canal:", status);
+            if (import.meta.env.DEV) {
+              console.debug("[Realtime] Estado del canal:", status);
+            }
 
             if (err) {
               console.error("[Realtime] Error en suscripción:", err);
@@ -139,7 +145,9 @@ export function useRealtimeAvisos(options: UseRealtimeAvisosOptions = {}) {
     // Cleanup: desuscribirse al desmontar
     return () => {
       if (channel) {
-        console.debug("[Realtime] Desuscribiendo del canal...");
+        if (import.meta.env.DEV) {
+          console.debug("[Realtime] Desuscribiendo del canal...");
+        }
         supabase.removeChannel(channel);
       }
     };
@@ -147,7 +155,7 @@ export function useRealtimeAvisos(options: UseRealtimeAvisosOptions = {}) {
 
   return {
     /** Estado actual de la conexión realtime */
-    status,
+    status: enabled ? status : "disconnected",
     /** Cantidad de nuevos avisos desde la última interacción */
     newAvisosCount,
     /** Timestamp del último evento recibido */
@@ -155,7 +163,7 @@ export function useRealtimeAvisos(options: UseRealtimeAvisosOptions = {}) {
     /** Función para resetear el contador de nuevos avisos */
     clearNewAvisosCount,
     /** Indica si está conectado y escuchando */
-    isConnected: status === "connected",
+    isConnected: enabled && status === "connected",
     /** Indica si hubo un error de conexión */
     hasError: status === "error",
   };

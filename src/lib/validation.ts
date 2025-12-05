@@ -16,8 +16,8 @@ const MAX_SEARCH_LENGTH = 200;
 /** Longitud máxima para campos de texto corto */
 const MAX_SHORT_TEXT = 100;
 
-/** Caracteres potencialmente peligrosos para SQL/NoSQL Injection */
-const DANGEROUS_PATTERNS = /[;'"\\<>{}|`]/g;
+/** Caracteres potencialmente peligrosos para SQL/NoSQL Injection y PostgREST apps */
+const DANGEROUS_PATTERNS = /[;'"\\<>{}|`(),:%]/g;
 
 /** Patrón de fecha válido: YYYY-MM-DD */
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;

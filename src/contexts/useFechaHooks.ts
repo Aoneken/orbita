@@ -29,7 +29,7 @@ export function useFechaSeleccionada() {
 }
 
 /**
- * Hook simplificado para rango de fechas (Feed).
+ * Hook simplificado para rango de fechas (Explorar).
  */
 export function useRangoFechas() {
   const { rangoFechas, setRangoFechas } = useFechaContext();

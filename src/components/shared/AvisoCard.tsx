@@ -1,6 +1,6 @@
 // ==========================================
 // COMPONENTE UNIFICADO: AvisoCard
-// Variantes: expandible (Inicio/Feed) | simple (Portal)
+// Variantes: expandible (Inicio/Explorar) | simple (Portal)
 // ==========================================
 
 import { Badge } from "@/components/ui/badge";

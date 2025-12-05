@@ -96,7 +96,7 @@ export function StatCardSkeleton() {
   );
 }
 
-// Skeleton para tarjeta de aviso en Feed
+// Skeleton para tarjeta de aviso en Explorar
 export function AvisoCardSkeleton() {
   return (
     <Card>

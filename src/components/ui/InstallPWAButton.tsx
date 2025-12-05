@@ -7,8 +7,15 @@
 // - El navegador no soporta instalación
 // - El usuario ya instaló la app
 
-import { Download } from "lucide-react";
+import { Download, Share, PlusSquare } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // Extender la interfaz Window para incluir el evento beforeinstallprompt
 interface BeforeInstallPromptEvent extends Event {
@@ -34,8 +41,13 @@ function useInstallPWA() {
     useState<BeforeInstallPromptEvent | null>(null);
   const [isStandalone, setIsStandalone] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
+  const [isIOS] = useState(() =>
+    /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase())
+  );
 
   useEffect(() => {
+
+
     // Detectar si ya está corriendo como PWA (standalone)
     const checkStandalone = () => {
       const isStandaloneMode =
@@ -86,6 +98,9 @@ function useInstallPWA() {
 
   // Función para disparar la instalación
   const promptInstall = useCallback(async () => {
+    // En iOS no podemos invocar el prompt, retornamos false para manejarlo en la UI
+    if (isIOS) return false;
+
     if (!installPrompt) return false;
 
     try {
@@ -102,18 +117,19 @@ function useInstallPWA() {
       console.error("Error al mostrar prompt de instalación");
       return false;
     }
-  }, [installPrompt]);
+  }, [installPrompt, isIOS]);
 
   // El botón es visible si:
-  // - Tenemos el evento de instalación capturado
+  // - Tenemos el evento de instalación capturado (Android/Desktop) O es iOS
   // - No estamos en modo standalone
   // - No se ha instalado la app
-  const canInstall = !!installPrompt && !isStandalone && !isInstalled;
+  const canInstall = (!!installPrompt || isIOS) && !isStandalone && !isInstalled;
 
   return {
     canInstall,
     promptInstall,
     isStandalone,
+    isIOS,
   };
 }
 
@@ -122,21 +138,61 @@ function useInstallPWA() {
  * Solo se muestra cuando la instalación es posible.
  */
 export function InstallPWAButton() {
-  const { canInstall, promptInstall } = useInstallPWA();
+  const { canInstall, promptInstall, isIOS } = useInstallPWA();
+  const [showIOSInstructions, setShowIOSInstructions] = useState(false);
 
   // No renderizar si no se puede instalar
   if (!canInstall) return null;
 
+  const handleClick = async () => {
+    if (isIOS) {
+      setShowIOSInstructions(true);
+    } else {
+      await promptInstall();
+    }
+  };
+
   return (
-    <button
-      type="button"
-      onClick={promptInstall}
-      className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs sm:text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 rounded-full transition-colors active:scale-95 animate-pulse shadow-sm"
-      aria-label="Instalar aplicación"
-      title="Instalar Órbita como app"
-    >
-      <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-      <span className="hidden sm:inline">Instalar</span>
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={handleClick}
+        className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs sm:text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 rounded-full transition-colors active:scale-95 animate-pulse shadow-sm"
+        aria-label="Instalar aplicación"
+        title="Instalar Órbita como app"
+      >
+        <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+        <span className="hidden sm:inline">Instalar</span>
+      </button>
+
+      <Dialog open={showIOSInstructions} onOpenChange={setShowIOSInstructions}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Instalar Órbita en iOS</DialogTitle>
+            <DialogDescription>
+              Sigue estos pasos para instalar la aplicación en tu pantalla de inicio:
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-4 py-2">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center p-2 rounded-md bg-muted text-primary">
+                <Share className="h-5 w-5" />
+              </div>
+              <p className="text-sm">
+                1. Toca el botón <strong>Compartir</strong> en la barra inferior de Safari.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center p-2 rounded-md bg-muted text-primary">
+                <PlusSquare className="h-5 w-5" />
+              </div>
+              <p className="text-sm">
+                2. Busca y selecciona <strong>Agregar a Inicio</strong> en el menú.
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
