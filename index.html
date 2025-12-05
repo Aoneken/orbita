@@ -7,6 +7,14 @@
     <!-- Security Headers: Migrados a public/_headers (Cloudflare Pages) -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
+    <!-- Anti-Cache Meta Tags: Force reload for Hotfix -->
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <!-- App Meta: usar favicon con fondo transparente para pestaña -->
     <link
       rel="icon"

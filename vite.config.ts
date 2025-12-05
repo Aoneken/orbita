@@ -42,10 +42,15 @@ export default defineConfig({
       ],
       manifest: false, // Usamos nuestro propio manifest.json en public/
       workbox: {
-        // Cachear assets estáticos
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,webp,woff,woff2}"],
-        // Límite de tamaño para precaching (5MB)
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+          // Cachear assets estáticos
+         globPatterns: ["**/*.{js,css,html,ico,png,svg,webp,woff,woff2}"],
+         // Limpiar caches antiguos inmediatamente
+         cleanupOutdatedCaches: true,
+         // Forzar activación inmediata del nuevo SW
+         skipWaiting: true,
+         clientsClaim: true,
+         // Límite de tamaño para precaching (5MB)
+         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         // Runtime caching para API de Supabase
         runtimeCaching: [
           {

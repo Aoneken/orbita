@@ -79,7 +79,7 @@ export function InfoView() {
   const versionBadge = (
     <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full">
       <Zap className="h-4 w-4" />
-      <span className="font-medium text-sm sm:text-base">v1.2</span>
+      <span className="font-medium text-sm sm:text-base">v1.2.1</span>
     </div>
   );
 

@@ -165,7 +165,7 @@ function Navegacion({
             <div className="flex items-center gap-2 absolute left-1/2 transform -translate-x-1/2">
               <span className="font-bold text-lg sm:text-xl">Órbita</span>
               <span className="text-[10px] sm:text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                v1.2
+                v1.2.1
               </span>
             </div>
 
