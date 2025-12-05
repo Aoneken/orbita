@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { setNewContentBadge } from "@/utils/notifications";
@@ -41,6 +41,10 @@ export function useRealtimeAvisos(options: UseRealtimeAvisosOptions = {}) {
   const [status, setStatus] = useState<RealtimeStatus>("disconnected");
   const [newAvisosCount, setNewAvisosCount] = useState(0);
   const [lastEventTime, setLastEventTime] = useState<Date | null>(null);
+
+  // Ref estable para el callback - evita re-suscripciones cuando onNewAviso cambia
+  const onNewAvisoRef = useRef(onNewAviso);
+  onNewAvisoRef.current = onNewAviso;
 
   /**
    * Resetea el contador de nuevos avisos
@@ -102,19 +106,24 @@ export function useRealtimeAvisos(options: UseRealtimeAvisosOptions = {}) {
               setNewAvisosCount((prev) => prev + 1);
               setLastEventTime(new Date());
 
-              // 4. Callback opcional
-              if (onNewAviso) {
-                onNewAviso(payload.new);
+              // 4. Callback opcional (usando ref estable)
+              if (onNewAvisoRef.current) {
+                onNewAvisoRef.current(payload.new);
               }
             }
           )
-          .subscribe((status) => {
+          .subscribe((status, err) => {
             console.debug("[Realtime] Estado del canal:", status);
+
+            if (err) {
+              console.error("[Realtime] Error en suscripción:", err);
+            }
 
             if (status === "SUBSCRIBED") {
               setStatus("connected");
             } else if (status === "CLOSED" || status === "CHANNEL_ERROR") {
               setStatus("error");
+              console.error("[Realtime] Canal cerrado/error:", status, err);
             } else if (status === "TIMED_OUT") {
               setStatus("disconnected");
             }
@@ -134,7 +143,7 @@ export function useRealtimeAvisos(options: UseRealtimeAvisosOptions = {}) {
         supabase.removeChannel(channel);
       }
     };
-  }, [enabled, queryClient, onNewAviso]);
+  }, [enabled, queryClient]); // Removido onNewAviso de las dependencias
 
   return {
     /** Estado actual de la conexión realtime */

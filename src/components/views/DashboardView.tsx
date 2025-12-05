@@ -20,6 +20,7 @@ import {
   SelectorFechaFlotante,
   ViewHeader,
 } from "@/components/shared";
+import { formatOrganismoName } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -363,7 +364,7 @@ function TopEmisores() {
             {visibles.map((item) => (
               <BarraProgreso
                 key={item.emisor}
-                label={item.emisor}
+                label={formatOrganismoName(item.emisor)}
                 value={item.cantidad}
                 max={max}
                 colorClass="from-purple-500 to-purple-500/60"
@@ -376,7 +377,7 @@ function TopEmisores() {
               {ocultos.map((item) => (
                 <BarraProgreso
                   key={item.emisor}
-                  label={item.emisor}
+                  label={formatOrganismoName(item.emisor)}
                   value={item.cantidad}
                   max={max}
                   colorClass="from-purple-500 to-purple-500/60"
@@ -770,7 +771,7 @@ function ProtagonistasHoy() {
                   : "bg-muted text-foreground"
               }`}
             >
-              {emisor}
+              {formatOrganismoName(emisor)}
             </span>
           ))}
         </div>
@@ -807,7 +808,9 @@ export function DashboardView() {
         {/* Indicador flotante de filtro activo - componente reutilizable */}
         <NotificacionFiltro
           rangoFechas={rangoFechas}
-          onClear={() => setRangoFechas({ desde: undefined, hasta: undefined })}
+          onClearFecha={() =>
+            setRangoFechas({ desde: undefined, hasta: undefined })
+          }
           variant="badge"
         />
 
@@ -887,7 +890,7 @@ export function DashboardView() {
         rangoFechas={rangoFechas}
         onRangoChange={setRangoFechas}
       />
-      <BotonIrArriba />
+      <BotonIrArriba position="elevated" />
     </DashboardFilterContext.Provider>
   );
 }

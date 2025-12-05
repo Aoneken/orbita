@@ -1,5 +1,5 @@
 {
-  "name": "Órbita | Análisis del Boletín Oficial",
+  "name": "Órbita | Boletín Oficial",
   "short_name": "Órbita",
   "description": "Boletín Oficial de Argentina simplificado con IA. Resúmenes y análisis en tiempo real.",
   "start_url": "/?source=pwa",
@@ -33,9 +33,9 @@
   "screenshots": [],
   "shortcuts": [
     {
-      "name": "Feed de Avisos",
-      "short_name": "Feed",
-      "url": "/?view=feed&source=pwa",
+      "name": "Explorar Avisos",
+      "short_name": "Explorar",
+      "url": "/?view=explorar&source=pwa",
       "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
     },
     {

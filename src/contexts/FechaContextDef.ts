@@ -16,7 +16,7 @@ export interface FechaContextType {
   fechaSeleccionada: string | undefined;
   setFechaSeleccionada: (fecha: string | undefined) => void;
 
-  // Rango de fechas (para FeedView)
+  // Rango de fechas (para ExplorarView)
   rangoFechas: RangoFechas;
   setRangoFechas: (rango: RangoFechas) => void;
 

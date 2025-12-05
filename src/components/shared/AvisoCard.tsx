@@ -4,7 +4,7 @@
 // ==========================================
 
 import { Badge } from "@/components/ui/badge";
-import { formatearEmisor, formatearFechaCorta } from "@/lib/utils";
+import { formatearFechaCorta, formatOrganismoName } from "@/lib/utils";
 import type { AvisoBora } from "@/types";
 import {
   capturarPantalla,
@@ -92,7 +92,7 @@ function AvisoCardSimple({
 }
 
 // ==========================================
-// VARIANTE: EXPANDIBLE (InicioView/FeedView style)
+// VARIANTE: EXPANDIBLE (InicioView/ExplorarView style)
 // ==========================================
 
 interface AvisoCardExpandibleProps {
@@ -169,7 +169,9 @@ function AvisoCardExpandible({
           {/* Emisor */}
           {showEmisor && (
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1.5 text-xs sm:text-sm text-muted-foreground">
-              <span className="truncate">{formatearEmisor(aviso.emisor)}</span>
+              <span className="truncate max-w-[200px] sm:max-w-[280px]">
+                {formatOrganismoName(aviso.emisor)}
+              </span>
             </div>
           )}
         </div>
@@ -268,6 +270,7 @@ function AvisoCardExpandible({
               {showShareButtons && (
                 <div className="flex items-center gap-1">
                   <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       compartirEnlace(aviso);
@@ -278,6 +281,7 @@ function AvisoCardExpandible({
                     <Share2 className="h-4 w-4" />
                   </button>
                   <button
+                    type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       capturarPantalla(aviso);

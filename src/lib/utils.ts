@@ -174,6 +174,241 @@ export function formatearEmisor(emisor: string): string {
     .replace(/^./, (c) => c.toUpperCase());
 }
 
+// ==========================================
+// DICCIONARIO DE ABREVIATURAS DE ORGANISMOS
+// ==========================================
+
+/**
+ * Diccionario de abreviaturas oficiales y comunes.
+ * Las claves están normalizadas (minúsculas, sin tildes).
+ */
+const ORGANISMOS_ABREVIATURAS: Record<string, string> = {
+  // Siglas oficiales ampliamente conocidas
+  "banco central de la republica argentina": "BCRA",
+  "administracion federal de ingresos publicos": "AFIP",
+  "administracion nacional de la seguridad social": "ANSES",
+  "poder ejecutivo nacional": "PEN",
+  "honorable congreso de la nacion": "HCN",
+  "comision nacional de valores": "CNV",
+  "superintendencia de seguros de la nacion": "SSN",
+  "ente nacional regulador de la electricidad": "ENRE",
+  "ente nacional regulador del gas": "ENARGAS",
+  "instituto nacional de estadistica y censos": "INDEC",
+  "consejo nacional de investigaciones cientificas y tecnicas": "CONICET",
+  "universidad de buenos aires": "UBA",
+  "agencia nacional de seguridad vial": "ANSV",
+  "secretaria de energia": "Sec. Energía",
+
+  // Ministerios - abreviaturas legibles
+  "ministerio de economia": "Min. Economía",
+  "ministerio de capital humano": "Min. Cap. Humano",
+  "ministerio de seguridad": "Min. Seguridad",
+  "ministerio de defensa": "Min. Defensa",
+  "ministerio de salud": "Min. Salud",
+  "ministerio de justicia": "Min. Justicia",
+  "ministerio de relaciones exteriores, comercio internacional y culto":
+    "Min. RREE",
+  "ministerio de relaciones exteriores comercio internacional y culto":
+    "Min. RREE",
+  "ministerio del interior": "Min. Interior",
+  "ministerio de infraestructura": "Min. Infraestructura",
+  "ministerio de desregulacion y transformacion del estado": "Min. Desreg.",
+
+  // Secretarías comunes
+  "jefatura de gabinete de ministros": "Jef. Gabinete",
+  "secretaria legal y tecnica": "Sec. Legal y Técnica",
+  "secretaria de trabajo, empleo y seguridad social": "Sec. Trabajo",
+  "secretaria de trabajo empleo y seguridad social": "Sec. Trabajo",
+  "secretaria de comercio interior": "Sec. Comercio Int.",
+  "secretaria de comercio exterior": "Sec. Comercio Ext.",
+  "secretaria de hacienda": "Sec. Hacienda",
+  "secretaria de finanzas": "Sec. Finanzas",
+  "secretaria de industria y comercio": "Sec. Industria",
+  "secretaria de agricultura, ganaderia y pesca": "Sec. Agricultura",
+  "secretaria de agricultura ganaderia y pesca": "Sec. Agricultura",
+  "secretaria de transporte": "Sec. Transporte",
+  "secretaria de mineria": "Sec. Minería",
+
+  // Otros organismos frecuentes
+  "inspeccion general de justicia": "IGJ",
+  "autoridad regulatoria nuclear": "ARN",
+  "servicio nacional de sanidad y calidad agroalimentaria": "SENASA",
+  "administracion de parques nacionales": "APN",
+  "direccion nacional de migraciones": "DNM",
+  "registro nacional de las personas": "RENAPER",
+  "instituto nacional de tecnologia agropecuaria": "INTA",
+  "instituto nacional de tecnologia industrial": "INTI",
+  "instituto nacional de cine y artes audiovisuales": "INCAA",
+  "agencia de acceso a la informacion publica": "AAIP",
+  "sindicatura general de la nacion": "SIGEN",
+  "auditoria general de la nacion": "AGN",
+};
+
+/**
+ * Normaliza texto para búsqueda en diccionario (minúsculas, sin tildes)
+ */
+function normalizarParaBusqueda(texto: string): string {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+/**
+ * Diccionario de abreviaturas agresivas para palabras comunes.
+ * Se aplican después de extraer el organismo principal.
+ */
+const ABREVIATURAS_PALABRAS: Record<string, string> = {
+  ministerio: "Min.",
+  secretaria: "Sec.",
+  secretaría: "Sec.",
+  direccion: "Dir.",
+  dirección: "Dir.",
+  nacional: "Nac.",
+  general: "Gral.",
+  provincial: "Prov.",
+  administracion: "Adm.",
+  administración: "Adm.",
+  subsecretaria: "Subsec.",
+  subsecretaría: "Subsec.",
+  superintendencia: "Sup.",
+  instituto: "Inst.",
+  comision: "Com.",
+  comisión: "Com.",
+  autoridad: "Aut.",
+  agencia: "Ag.",
+  oficina: "Of.",
+  departamento: "Dpto.",
+  coordinacion: "Coord.",
+  coordinación: "Coord.",
+  regulacion: "Reg.",
+  regulación: "Reg.",
+  trabajo: "Trab.",
+  relaciones: "Rel.",
+  internacional: "Int.",
+  internacionales: "Int.",
+  exterior: "Ext.",
+  exteriores: "Ext.",
+  economia: "Econ.",
+  economía: "Econ.",
+  desarrollo: "Des.",
+  humano: "Hum.",
+  capital: "Cap.",
+  seguridad: "Seg.",
+  social: "Soc.",
+  justicia: "Just.",
+  ambiente: "Amb.",
+  transporte: "Transp.",
+  infraestructura: "Infraest.",
+  educacion: "Educ.",
+  educación: "Educ.",
+  ciencia: "Cs.",
+  tecnologia: "Tec.",
+  tecnología: "Tec.",
+  produccion: "Prod.",
+  producción: "Prod.",
+  comercio: "Com.",
+  interior: "Int.",
+  defensa: "Def.",
+  hacienda: "Hac.",
+  finanzas: "Fin.",
+  agricultura: "Agric.",
+  ganaderia: "Gan.",
+  ganadería: "Gan.",
+  pesca: "Pesca",
+  mineria: "Min.",
+  minería: "Min.",
+  energia: "Energ.",
+  energía: "Energ.",
+  comunicaciones: "Com.",
+  telecomunicaciones: "Telecom.",
+  federal: "Fed.",
+  publica: "Púb.",
+  pública: "Púb.",
+  publico: "Púb.",
+  público: "Púb.",
+  argentina: "Arg.",
+  republica: "Rep.",
+  república: "Rep.",
+};
+
+/**
+ * Aplica abreviaturas agresivas a cada palabra del texto.
+ */
+function aplicarAbreviaturasAgresivas(texto: string): string {
+  return texto
+    .split(" ")
+    .map((word) => {
+      const wordLower = word.toLowerCase();
+      // Palabras comunes a mantener en minúscula
+      const minusculas = [
+        "de",
+        "del",
+        "la",
+        "las",
+        "los",
+        "el",
+        "y",
+        "e",
+        "en",
+        "a",
+      ];
+      if (minusculas.includes(wordLower)) return "";
+
+      // Buscar abreviatura
+      if (ABREVIATURAS_PALABRAS[wordLower]) {
+        return ABREVIATURAS_PALABRAS[wordLower];
+      }
+
+      // Capitalizar primera letra
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .filter(Boolean)
+    .join(" ");
+}
+
+/**
+ * Formatea el nombre de un organismo usando abreviaturas conocidas.
+ * Prioriza la brevedad: extrae el organismo principal (antes del guión)
+ * y aplica abreviaturas agresivas.
+ *
+ * @param nombre - Nombre completo del organismo
+ * @returns Nombre abreviado y corto
+ */
+export function formatOrganismoName(nombre: string): string {
+  if (!nombre) return nombre;
+
+  // 1. Si tiene guiones, tomar solo la primera parte (organismo principal)
+  let organismoBase = nombre;
+  if (nombre.includes(" - ")) {
+    organismoBase = nombre.split(" - ")[0].trim();
+  } else if (nombre.includes("-")) {
+    // Guión sin espacios también
+    const partes = nombre.split("-");
+    if (partes[0].length > 3) {
+      organismoBase = partes[0].trim();
+    }
+  }
+
+  const normalizado = normalizarParaBusqueda(organismoBase);
+
+  // 2. Buscar coincidencia exacta en diccionario de siglas conocidas
+  if (ORGANISMOS_ABREVIATURAS[normalizado]) {
+    return ORGANISMOS_ABREVIATURAS[normalizado];
+  }
+
+  // 3. Buscar coincidencia parcial en diccionario
+  for (const [clave, abreviatura] of Object.entries(ORGANISMOS_ABREVIATURAS)) {
+    if (normalizado.includes(clave) || clave.includes(normalizado)) {
+      return abreviatura;
+    }
+  }
+
+  // 4. Aplicar abreviaturas agresivas palabra por palabra
+  return aplicarAbreviaturasAgresivas(organismoBase);
+}
+
 /**
  * Formatea una fecha de actualización en formato compacto (24hs)
  * NOTA: La BD almacena fechas en UTC (sin timezone indicator).

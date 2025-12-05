@@ -1,4 +1,4 @@
-import { Calendar, FileText, Loader2, Newspaper } from "lucide-react";
+import { Calendar, FileText, Loader2, Search } from "lucide-react";
 import { createContext, useContext } from "react";
 
 import {
@@ -94,14 +94,15 @@ function SeccionDecretos() {
         {/* Lista de decretos - key fuerza reset cuando cambia fecha */}
         <ListaDecretos key={fechaSeleccionada || "latest"} />
 
-        {/* Botón para ver más anuncios en Feed */}
+        {/* Botón para ver más anuncios en Explorar */}
         <div className="mt-4 pt-3 border-t flex justify-center">
           <button
-            onClick={() => onNavigate?.("feed")}
+            type="button"
+            onClick={() => onNavigate?.("explorar")}
             className="flex items-center gap-2 px-5 py-2.5 bg-primary/10 hover:bg-primary/20 text-primary font-medium rounded-xl transition-colors touch-manipulation"
           >
-            <Newspaper className="h-4 w-4" />
-            Ver más anuncios en Feed
+            <Search className="h-4 w-4" />
+            Explorar más anuncios
           </button>
         </div>
       </CardContent>
@@ -173,7 +174,7 @@ export function InicioView({ onNavigate }: InicioViewProps) {
         fechaSeleccionada={fechaEfectiva}
         onFechaChange={handleSetFecha}
       />
-      <BotonIrArriba />
+      <BotonIrArriba position="elevated" />
     </NavigationContext.Provider>
   );
 }

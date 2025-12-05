@@ -47,6 +47,7 @@ export function NotFoundView({ onNavigateHome }: NotFoundViewProps) {
           </div>
 
           <button
+            type="button"
             onClick={handleGoHome}
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-medium rounded-xl transition-colors hover:bg-primary/90 touch-manipulation active:scale-95"
           >

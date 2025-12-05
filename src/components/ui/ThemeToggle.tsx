@@ -83,6 +83,7 @@ export function ThemeToggle({
   if (variant === "icon") {
     return (
       <button
+        type="button"
         onClick={cycleTheme}
         className={cn(
           "relative flex items-center justify-center",
@@ -123,6 +124,7 @@ export function ThemeToggle({
       >
         {themes.map(({ id, icon: Icon, label }) => (
           <button
+            type="button"
             key={id}
             onClick={() => setTheme(id)}
             className={cn(
@@ -151,6 +153,7 @@ export function ThemeToggle({
   // ==========================================
   return (
     <button
+      type="button"
       onClick={cycleTheme}
       className={cn(
         "flex items-center gap-2 px-3 py-2 rounded-lg",

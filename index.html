@@ -1,29 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
+    <!-- Charset DEBE ser la primera línea del head -->
     <meta charset="UTF-8" />
 
-    <!-- Security Headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <!-- Security Headers: Migrados a public/_headers (Cloudflare Pages) -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-
-    <!-- Content Security Policy -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="
-      default-src 'self';
-      script-src 'self' 'unsafe-inline';
-      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-      font-src 'self' https://fonts.gstatic.com;
-      img-src 'self' data: https: blob:;
-      connect-src 'self' https://*.supabase.co wss://*.supabase.co;
-      frame-ancestors 'none';
-      base-uri 'self';
-      form-action 'self';
-    "
-    />
 
     <!-- App Meta: usar favicon con fondo transparente para pestaña -->
     <link
@@ -40,7 +22,7 @@
     <link rel="mask-icon" href="/logo_orbita_sinfondo.svg" color="#0f172a" />
 
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <!-- iOS PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
@@ -49,10 +31,12 @@
     />
     <meta name="apple-mobile-web-app-title" content="Órbita" />
     <link rel="apple-touch-icon" sizes="180x180" href="/pwa-192x192.png" />
+    <!-- PWA: Compatibilidad futura (versión Apple deprecada) -->
+    <meta name="mobile-web-app-capable" content="yes" />
 
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"
     />
     <meta name="theme-color" content="#0f172a" />
     <meta

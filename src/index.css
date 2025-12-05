@@ -67,8 +67,37 @@
   }
 
   /* Safe area para dispositivos con notch */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0);
+  }
   .safe-area-bottom {
     padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  /* Contenedor principal PWA que respeta áreas seguras */
+  .safe-area-container {
+    padding-top: env(safe-area-inset-top, 0);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    padding-left: env(safe-area-inset-left, 0);
+    padding-right: env(safe-area-inset-right, 0);
+  }
+
+  /* Botones flotantes con safe-area para móviles PWA */
+  /* Posición normal: por encima del nav móvil (64px + 16px + safe-area) */
+  .floating-btn-normal {
+    bottom: calc(5rem + env(safe-area-inset-bottom, 0));
+  }
+  /* Posición elevada: más arriba cuando hay selector de fechas abierto */
+  .floating-btn-elevated {
+    bottom: calc(9rem + env(safe-area-inset-bottom, 0));
+  }
+  /* En desktop: posición más cercana al borde */
+  @media (min-width: 640px) {
+    .floating-btn-normal {
+      bottom: 1.5rem;
+    }
+    .floating-btn-elevated {
+      bottom: 5rem;
+    }
   }
 
   /* Mejorar scrolling en móvil */

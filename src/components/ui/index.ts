@@ -7,6 +7,7 @@ export * from "./card";
 export * from "./collapsible";
 export * from "./dialog";
 export * from "./input";
+export * from "./InstallPWAButton";
 export * from "./separator";
 export * from "./skeleton";
 export * from "./skeletons";

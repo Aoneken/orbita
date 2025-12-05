@@ -2,7 +2,7 @@
 // HOOK: usePaginacion
 // ==========================================
 // Encapsula la lógica de paginación con scroll suave.
-// Usado en listas de avisos/decretos en InicioView, FeedView, PortalView.
+// Usado en listas de avisos/decretos en InicioView, ExplorarView, PortalView.
 
 import { useCallback, useEffect, useRef, useState } from "react";
 

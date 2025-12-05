@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SintesisSkeleton } from "@/components/ui/skeletons";
 import { useDecretosDelDia, useSintesisTelegram } from "@/hooks";
+import { formatOrganismoName } from "@/lib/utils";
 import {
   agruparTiposNorma,
   capturarSintesis,
@@ -98,6 +99,7 @@ export function SintesisDia({
           {showShareButtons && (
             <div className="flex items-center gap-1">
               <button
+                type="button"
                 onClick={() =>
                   compartirSintesis(envio.sintesis_ia || "", fechaSeleccionada)
                 }
@@ -107,6 +109,7 @@ export function SintesisDia({
                 <Share2 className="h-4 w-4 text-muted-foreground" />
               </button>
               <button
+                type="button"
                 onClick={() =>
                   capturarSintesis(envio.sintesis_ia || "", fechaSeleccionada)
                 }
@@ -172,7 +175,7 @@ export function SintesisDia({
             <div className="flex flex-wrap gap-1.5">
               {eliminarEmisorDuplicados(emisoresTop3).map((emisor) => (
                 <Badge key={emisor} variant="outline" className="text-xs">
-                  {emisor}
+                  {formatOrganismoName(emisor)}
                 </Badge>
               ))}
             </div>
@@ -199,7 +202,7 @@ export function SintesisDia({
                     {decreto.descripcion_ia || decreto.titulo}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1 truncate">
-                    {decreto.emisor}
+                    {formatOrganismoName(decreto.emisor)}
                   </p>
                 </a>
               ))}

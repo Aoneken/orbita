@@ -86,5 +86,13 @@
     "vite": "^7.2.4",
     "vite-plugin-pwa": "^1.2.0",
     "vitest": "^4.0.15"
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "not dead",
+    "ios >= 12",
+    "safari >= 12",
+    "chrome >= 80",
+    "firefox >= 80"
+  ]
 }

@@ -3,7 +3,7 @@
 // para habilitar code-splitting. Este barrel es útil para imports estáticos si es necesario.
 
 export { DashboardView } from "./DashboardView";
-export { FeedView } from "./FeedView";
+export { ExplorarView } from "./ExplorarView";
 export { InfoView } from "./InfoView";
 export { InicioView } from "./InicioView";
 export { NotFoundView } from "./NotFoundView";

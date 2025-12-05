@@ -5,6 +5,10 @@ import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
+  // Exponer en la red local para probar en dispositivos móviles
+  server: {
+    host: true,
+  },
   plugins: [
     react(),
     // Plugin Legacy: Genera bundles compatibles con navegadores antiguos

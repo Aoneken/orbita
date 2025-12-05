@@ -13,6 +13,7 @@ function CollapsibleTrigger({
 }: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>) {
   return (
     <CollapsiblePrimitive.CollapsibleTrigger
+      type="button"
       data-slot="collapsible-trigger"
       {...props}
     />

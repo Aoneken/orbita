@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BarChart3, Home, Info, Newspaper } from "lucide-react";
+import { BarChart3, Home, Info, Search } from "lucide-react";
 import { Suspense, lazy, useState } from "react";
 
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { InstallPWAButton } from "@/components/ui/InstallPWAButton";
 import {
   AnimatePresence,
   DirectionalPageTransition,
@@ -23,8 +24,10 @@ const InicioView = lazy(() =>
     default: m.InicioView,
   }))
 );
-const FeedView = lazy(() =>
-  import("@/components/views/FeedView").then((m) => ({ default: m.FeedView }))
+const ExplorarView = lazy(() =>
+  import("@/components/views/ExplorarView").then((m) => ({
+    default: m.ExplorarView,
+  }))
 );
 const DashboardView = lazy(() =>
   import("@/components/views/DashboardView").then((m) => ({
@@ -58,7 +61,7 @@ const queryClient = new QueryClient({
   },
 });
 
-type Vista = "inicio" | "feed" | "dashboard" | "info";
+type Vista = "inicio" | "explorar" | "dashboard" | "info";
 
 const VISTAS = [
   {
@@ -68,10 +71,10 @@ const VISTAS = [
     descripcion: "Síntesis diaria",
   },
   {
-    id: "feed" as Vista,
-    nombre: "Feed",
-    icon: Newspaper,
-    descripcion: "Tiempo real",
+    id: "explorar" as Vista,
+    nombre: "Explorar",
+    icon: Search,
+    descripcion: "Buscar avisos",
   },
   {
     id: "dashboard" as Vista,
@@ -141,11 +144,11 @@ function Navegacion({
   return (
     <>
       {/* Header superior - Logo a la izquierda, título centrado, fecha a la derecha */}
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b select-none">
+      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b select-none safe-area-top">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-14 sm:h-16">
-            {/* Logo a la izquierda */}
-            <div className="flex items-center gap-1.5">
+            {/* Logo + Botón de instalación a la izquierda */}
+            <div className="flex items-center gap-2">
               <picture>
                 <source srcSet="/logo-header.webp" type="image/webp" />
                 <img
@@ -154,6 +157,8 @@ function Navegacion({
                   className="h-9 sm:h-10 w-auto"
                 />
               </picture>
+              {/* Botón de instalación PWA con animación de pulso */}
+              <InstallPWAButton />
             </div>
 
             {/* Título centrado */}
@@ -185,7 +190,7 @@ function Navegacion({
       </header>
 
       {/* Navegación inferior fija en móvil, superior en desktop */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t sm:sticky sm:top-14 sm:border-t-0 sm:border-b safe-area-bottom select-none">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t sm:sticky sm:top-14 sm:border-t-0 sm:border-b safe-area-bottom select-none">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-around sm:justify-center sm:gap-2 h-16 sm:h-12 px-2">
             {VISTAS.map((vista) => {
@@ -194,6 +199,7 @@ function Navegacion({
 
               return (
                 <button
+                  type="button"
                   key={vista.id}
                   onClick={() => onChange(vista.id)}
                   className={`flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-4 sm:px-6 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all min-w-[72px] sm:min-w-0 active:scale-95 ${
@@ -243,8 +249,8 @@ function AppContent() {
     // Scroll Restoration: volver arriba al cambiar de vista
     window.scrollTo({ top: 0, behavior: "instant" });
 
-    // Limpiar badge PWA y contador cuando el usuario navega al feed
-    if (nuevaVista === "feed") {
+    // Limpiar badge PWA y contador cuando el usuario navega a explorar
+    if (nuevaVista === "explorar") {
       clearNewAvisosCount();
       clearAppBadge();
     }
@@ -252,7 +258,7 @@ function AppContent() {
 
   // Wrapper para navegación desde vistas hijas
   const handleNavigate = (vista: string) => {
-    if (["inicio", "feed", "dashboard", "info"].includes(vista)) {
+    if (["inicio", "explorar", "dashboard", "info"].includes(vista)) {
       handleVistaChange(vista as Vista);
     }
   };
@@ -274,9 +280,9 @@ function AppContent() {
                 <InicioView onNavigate={handleNavigate} />
               </DirectionalPageTransition>
             )}
-            {vistaActual === "feed" && (
-              <DirectionalPageTransition key="feed" direction={direction}>
-                <FeedView />
+            {vistaActual === "explorar" && (
+              <DirectionalPageTransition key="explorar" direction={direction}>
+                <ExplorarView />
               </DirectionalPageTransition>
             )}
             {vistaActual === "dashboard" && (

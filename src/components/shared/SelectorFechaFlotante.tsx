@@ -279,16 +279,17 @@ export function SelectorFechaFlotante({
         : null
       : formatearRangoCorto(rangoFechas);
 
-  // Posición CSS
+  // Posición CSS: usa clases con safe-area-inset para móviles PWA
   const positionClasses =
     position === "elevated"
-      ? "fixed bottom-36 sm:bottom-20 right-4 z-40"
-      : "fixed bottom-20 sm:bottom-6 right-4 z-40";
+      ? "fixed floating-btn-elevated right-4 z-40"
+      : "fixed floating-btn-normal right-4 z-40";
 
   return (
     <div className={positionClasses} ref={calendarRef}>
       {/* Botón flotante */}
       <button
+        type="button"
         onClick={() => setMostrarCalendario(!mostrarCalendario)}
         className={`p-3 rounded-full shadow-lg transition-all active:scale-95 touch-manipulation ${
           tieneSeleccion
@@ -318,6 +319,7 @@ export function SelectorFechaFlotante({
           {allowModeSwitch && (
             <div className="flex items-center justify-center gap-1 mb-3 p-1 bg-muted rounded-lg">
               <button
+                type="button"
                 onClick={() => cambiarModo("single")}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
                   modoActivo === "single"
@@ -329,6 +331,7 @@ export function SelectorFechaFlotante({
                 <span>Día</span>
               </button>
               <button
+                type="button"
                 onClick={() => cambiarModo("range")}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
                   modoActivo === "range"
@@ -366,6 +369,7 @@ export function SelectorFechaFlotante({
           {/* Header del calendario */}
           <div className="flex items-center justify-between mb-4">
             <button
+              type="button"
               onClick={() => navegarMes(-1)}
               className="p-1 hover:bg-muted rounded-lg transition-colors"
             >
@@ -375,6 +379,7 @@ export function SelectorFechaFlotante({
               {NOMBRES_MESES[mesActual.getMonth()]} {mesActual.getFullYear()}
             </span>
             <button
+              type="button"
               onClick={() => navegarMes(1)}
               className="p-1 hover:bg-muted rounded-lg transition-colors"
             >
@@ -403,6 +408,7 @@ export function SelectorFechaFlotante({
             <div className="grid grid-cols-7 gap-1">
               {getDiasDelMes().map((item, i) => (
                 <button
+                  type="button"
                   key={i}
                   onClick={() =>
                     item.disponible && seleccionarFecha(item.fecha)
@@ -449,6 +455,7 @@ export function SelectorFechaFlotante({
                 rangoFechas.desde &&
                 !rangoFechas.hasta && (
                   <button
+                    type="button"
                     onClick={seleccionarSoloDia}
                     className="flex-1 text-sm text-primary hover:text-primary/80 py-2 rounded-lg hover:bg-primary/10 transition-colors"
                   >
@@ -456,6 +463,7 @@ export function SelectorFechaFlotante({
                   </button>
                 )}
               <button
+                type="button"
                 onClick={limpiarSeleccion}
                 className="flex-1 text-sm text-primary hover:text-primary/80 py-2 rounded-lg hover:bg-primary/10 transition-colors"
               >
